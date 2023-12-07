@@ -1,16 +1,15 @@
-import createClient from 'redis/lib/createClient';
+import { createClient } from 'redis';
 
 class RedisClient {
   constructor() {
-    this.client = createClient()
-      .on('error', (error) => {
-        console.log(error);
-      })
-      .connect();
+    this.client = createClient();
+
+    // Listen for errors
+    this.client.on('error', (err) => console.log('Redis Client Error', err));
   }
 
   isAlive() {
-    return this.client.isReady;
+    return this.client.connected;
   }
 
   async get(key) {
